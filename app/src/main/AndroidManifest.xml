@@ -16,11 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCC3gXoIuXxvFehPYL0rlpSmUkiHGX1UIs"/>
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.activity.ClimateActivity">
+
+        </activity>
+        <activity android:name=".ui.activity.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.LocationActivity">
         </activity>
 
 

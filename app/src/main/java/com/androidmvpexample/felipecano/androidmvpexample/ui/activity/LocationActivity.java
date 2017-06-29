@@ -1,53 +1,42 @@
 package com.androidmvpexample.felipecano.androidmvpexample.ui.activity;
 
-
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.androidmvpexample.felipecano.androidmvpexample.R;
-import com.androidmvpexample.felipecano.androidmvpexample.ui.presenter.MainActivityPresenter;
-import com.androidmvpexample.felipecano.androidmvpexample.ui.view.MainActivityView;
-import com.google.android.gms.maps.SupportMapFragment;
-
+import com.androidmvpexample.felipecano.androidmvpexample.ui.presenter.LocationActivityPresenter;
+import com.androidmvpexample.felipecano.androidmvpexample.ui.view.LocationActivityView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import javax.inject.Inject;
 
+/**
+ * Created by felipecano on 29/06/17.
+ */
 
-public class MainActivity extends BaseActivity implements MainActivityView, OnMapReadyCallback {
-
-    @Inject
-    MainActivityPresenter mMainActivityPresenter;
-
-    TextView mTextView;
+public class LocationActivity extends BaseActivity implements LocationActivityView, OnMapReadyCallback {
 
     private GoogleMap mMap;
+    @Inject
+    LocationActivityPresenter mLocationActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.location_activity);
 
-        mTextView = (TextView) findViewById(R.id.textView);
-
-        mMainActivityPresenter.attachView(this);
+        mLocationActivityPresenter.attachView(this);
 
         // Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-
-        //API
-        mMainActivityPresenter.getInformationApi();
-
     }
 
     @Override
@@ -61,20 +50,12 @@ public class MainActivity extends BaseActivity implements MainActivityView, OnMa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMainActivityPresenter.locationMaps();
+        mLocationActivityPresenter.locationMaps();
 
     }
-
 
     @Override
     public void showError() {
 
     }
-
-    @Override
-    public void showClimateInformation(String nameCity, String temp) {
-        mTextView.setText(nameCity + "---" + temp);
-        Log.d("LOG: ", nameCity + "---" + temp);
-    }
-
 }

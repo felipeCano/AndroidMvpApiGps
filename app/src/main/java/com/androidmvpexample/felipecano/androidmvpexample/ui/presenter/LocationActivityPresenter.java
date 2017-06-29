@@ -7,28 +7,21 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
-import com.androidmvpexample.felipecano.androidmvpexample.data.DataManager;
 import com.androidmvpexample.felipecano.androidmvpexample.injection.qualifier.ApplicationContext;
-import com.androidmvpexample.felipecano.androidmvpexample.ui.view.MainActivityView;
+import com.androidmvpexample.felipecano.androidmvpexample.ui.view.LocationActivityView;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by felipecano on 28/06/17.
+ * Created by felipecano on 29/06/17.
  */
 
-public class MainActivityPresenter extends BasePresenter<MainActivityView> implements LocationListener {
+public class LocationActivityPresenter extends BasePresenter<LocationActivityView> implements LocationListener {
 
     private CompositeSubscription mCompositeSubscription;
-
-    private final DataManager mDataManager;
-
     private LocationManager locationManager;
 
     @Inject
@@ -36,37 +29,23 @@ public class MainActivityPresenter extends BasePresenter<MainActivityView> imple
     Context mContext;
 
     @Inject
-    public MainActivityPresenter(DataManager dataManager) {
-        this.mDataManager = dataManager;
+    public LocationActivityPresenter() {
     }
 
     @Override
-    public void attachView(MainActivityView mvpView) {
+    public void attachView(LocationActivityView mvpView) {
         super.attachView(mvpView);
         if (mCompositeSubscription == null || mCompositeSubscription.isUnsubscribed()) {
             mCompositeSubscription = new CompositeSubscription();
         }
     }
 
-    public void getInformationApi() {
-        checkViewAttached();
-
-        mCompositeSubscription.add(
-                mDataManager.getClimate()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(climate -> {
-
-                            getMvpView().showClimateInformation(
-                                    climate.getCurrentObservation().getTempC().toString(),
-                                    climate.getCurrentObservation().getObservationLocation().getCity());
-
-                        }, throwable -> {
-                            Log.d("ERROR ", throwable.getMessage());
-                        })
-
-        );
-
+    @Override
+    public void detachView() {
+        super.detachView();
+        if (mCompositeSubscription != null) {
+            mCompositeSubscription.clear();
+        }
     }
 
     public void locationMaps() {
@@ -77,9 +56,9 @@ public class MainActivityPresenter extends BasePresenter<MainActivityView> imple
 
             locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
             if (locationManager != null) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -97,17 +76,12 @@ public class MainActivityPresenter extends BasePresenter<MainActivityView> imple
 
 
     @Override
-    public void detachView() {
-        super.detachView();
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.clear();
-        }
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         double lat = (location.getLatitude());
         double lng = (location.getLongitude());
+
+        getMvpView().showCoordinates(lat, lng);
+
     }
 
     @Override
@@ -124,5 +98,4 @@ public class MainActivityPresenter extends BasePresenter<MainActivityView> imple
     public void onProviderDisabled(String provider) {
 
     }
-
 }
