@@ -80,4 +80,5 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     compile 'javax.inject:javax.inject:1'
+    compile 'com.auth0.android:jwtdecode:1.1.1'
 }
