@@ -60,7 +60,7 @@ public class ClimateActivity extends BaseActivity implements ClimateActivityView
         
     }
     
-    private void getSharedPrefences(){
+    public void getSharedPrefences(View view){
         
         SharedPreferences prefs =
              getSharedPreferences("MyInformation",Context.MODE_PRIVATE);
@@ -68,6 +68,7 @@ public class ClimateActivity extends BaseActivity implements ClimateActivityView
         String city= prefs.getString("city", "-"); // si no encuentra la llave ciudad retorna -
         String temp= prefs.getString("information", "-"); // si no encuentra la llave informacion retorna -
 
+        mTextView.setText("INFORMACION DESDE LOCAL: "+city + "---" + temp);
         Log.d("SHARED PREFERENCES : ", city + "---" + temp);
 
     }
