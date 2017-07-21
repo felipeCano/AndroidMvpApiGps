@@ -54,8 +54,8 @@ public class ClimateActivity extends BaseActivity implements ClimateActivityView
              getSharedPreferences("MyInformation",Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(“city”, city);
-        editor.putString(“information”, climateInformation);
+        editor.putString("city", city);
+        editor.putString("information", climateInformation);
         editor.commit();
         
     }
