@@ -44,7 +44,21 @@ public class ClimateActivity extends BaseActivity implements ClimateActivityView
     @Override
     public void showClimateInformation(String nameCity, String temp) {
         mTextView.setText(nameCity + "---" + temp);
+        climateInformation(nameCity, temp);
         Log.d("LOG: ", nameCity + "---" + temp);
     }
+    
+    private void climateInformation(String city,String climateInformation){
 
+         SharedPreferences prefs =
+             getSharedPreferences("MyInformation",Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(“city”, city);
+        editor.putString(“information”, climateInformation);
+        editor.commit();
+        
+    }
+
+    
 }
