@@ -59,6 +59,18 @@ public class ClimateActivity extends BaseActivity implements ClimateActivityView
         editor.commit();
         
     }
+    
+    private void getSharedPrefences(){
+        
+        SharedPreferences prefs =
+             getSharedPreferences("MyInformation",Context.MODE_PRIVATE);
+
+        String city= prefs.getString("city", "-"); // si no encuentra la llave ciudad retorna -
+        String temp= prefs.getString("information", "-"); // si no encuentra la llave informacion retorna -
+
+        Log.d("SHARED PREFERENCES : ", city + "---" + temp);
+
+    }
 
     
 }
